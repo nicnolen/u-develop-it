@@ -1,0 +1,27 @@
+{
+  "name": "u-develop-it",
+  "version": "1.0.0",
+  "description": "Developed an app for voting using MySQL to store and retrieve records that are related to each other such as candidates, their parties, and members' votes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicnolen/u-develop-it.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicnolen/u-develop-it/issues"
+  },
+  "homepage": "https://github.com/nicnolen/u-develop-it#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
+  }
+}
