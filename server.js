@@ -1,6 +1,7 @@
 // Import npm packages
 // Import Express.js
 const express = require('express');
+const res = require('express/lib/response');
 // Import mysql2
 const mysql = require('mysql2');
 
@@ -28,18 +29,38 @@ const db = mysql.createConnection(
   console.log('Connected to the election database.')
 );
 
-// // return all the data in the candidates table
-// db.query(`SELECT * FROM candidates`, (err, rows) => {
-//   console.log(rows);
-// });
+// return all the data in the candidates table
+app.get('/api/candidates', (req, res) => {
+  const sql = `SELECT * FROM candidates`;
 
-// // GET a single candidate
-// db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
-//   if (err) {
-//     console.error(err);
-//   }
-//   console.info(row);
-// });
+  db.query(sql, (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: 'success',
+      data: rows,
+    });
+  });
+});
+
+// GET a single candidate
+app.get('/api/candidate/:id', (req, res) => {
+  const sql = `SELECT * FROM candidates WHERE id = ?`;
+  const params = [req.params.id];
+
+  db.query(sql, params, (err, row) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: 'success',
+      data: row,
+    });
+  });
+});
 
 // // DELETE a candidate
 // db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
@@ -49,17 +70,17 @@ const db = mysql.createConnection(
 //   console.log(result);
 // });
 
-// CREATE a candidate
-const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected) 
-              VALUES (?,?,?,?)`;
-const params = [1, 'Ronald', 'Firbank', 1];
+// // CREATE a candidate
+// const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected)
+//               VALUES (?,?,?,?)`;
+// const params = [1, 'Ronald', 'Firbank', 1];
 
-db.query(sql, params, (err, result) => {
-  if (err) {
-    console.error(err);
-  }
-  console.info(result);
-});
+// db.query(sql, params, (err, result) => {
+//   if (err) {
+//     console.error(err);
+//   }
+//   console.info(result);
+// });
 
 // Add a route to handle user requests that aren't supported by the app
 app.use((req, res) => {
